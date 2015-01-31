@@ -1,7 +1,48 @@
 <p>Testing</p>
+<a href="#" class="btn btn-large btn-primary" onclick="toronto()">Toronto</a>
+<a href="#" class="btn btn-large btn-primary" onclick="tilt45()">Tilt 45</a>
 <div id="map3d" style="height: 400px; width: 600px;"></div>
 
 <script>
+  var ge;
+  google.load("earth", "1", {"other_params":"sensor=true"});
+  function init() {
+    google.earth.createInstance('map3d', initCB, failureCB);
+  }
 
+  function initCB(instance) {
+    ge = instance;
+    ge.getWindow().setVisibility(true);
+  }
+
+  function failureCB(errorCode) {
+    alert("failed")
+  }
+
+  google.setOnLoadCallback(init);
+
+  function toronto() {
+    // Get the current view.
+    var lookAt = ge.createLookAt('');
+
+    // Set new latitude and longitude values.
+    lookAt.setLatitude(43.663681);
+    lookAt.setLongitude(-79.395149);
+    lookAt.setRange(500.0); //default is 0.0
+
+    // Update the view in Google Earth.
+    ge.getView().setAbstractView(lookAt);
+  }
+
+  function tilt45() {
+    var camera = ge.getView().copyAsCamera(ge.ALTITUDE_RELATIVE_TO_GROUND);
+    // Add 30 degrees to the current tilt
+    // and 45 to the roll.
+    camera.setTilt(camera.getTilt() + 30.0);
+    camera.setRoll(camera.getRoll() + 45.0);
+
+    // Update the view in Google Earth.
+    ge.getView().setAbstractView(camera);
+  }
 
 </script>
