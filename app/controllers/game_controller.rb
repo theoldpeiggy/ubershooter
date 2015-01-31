@@ -5,4 +5,7 @@ class GameController < ApplicationController
 
   end
 
+  def hit
+
+  end
 end
