@@ -3,6 +3,16 @@ class Tesla < ActiveRecord::Base
   require 'uri'
   ENDPOINT = 'http://private-anon-32e1816f4-timdorr.apiary-mock.com'
 
+  def authenticate(username, password)
+    contents = "user_session%5Bemail%5D=#{username}&user_session%5Bpassword%5D=#{password}"
+    uri = URI.parse(ENDPOINT + "/login")
+    http = Net::HTTP.new(uri.host, uri.port)
+
+    request = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json'})
+    request.body = contents
+
+    response = http.request(request)
+  end
 
   def vehicle
     @vehicle
@@ -16,18 +26,9 @@ class Tesla < ActiveRecord::Base
     @id = id
   end
 
-  def get(path)
-    uri = URI.parse(ENDPOINT + path)
-    http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Get.new(uri.request_uri)
-    response = http.request(request)
-    response
-  end
-
   def get_vehicles
     JSON.parse get('/vehicles').body
   end
-
 
   def get_login
     get('/login').body
@@ -35,15 +36,6 @@ class Tesla < ActiveRecord::Base
 
   def get_vehicle
     get_vehicles.first
-  end
-
-  def initialize
-    @vehicle = get_vehicle
-    @id = @vehicle["id"]
-  end
-
-  def get_command(path)
-    get("/vehicles/#{@id}/command" + path)
   end
 
   def get_mobile_enabled
@@ -121,7 +113,27 @@ class Tesla < ActiveRecord::Base
   def set_auto_conditioning_stop
     JSON.parse get_command("/auto_conditioning_stop").body
   end
+
   def set_sun_roof_control(state)
     JSON.parse get_command("/sun_roof_control?state=#{state}").body
+  end
+
+  private
+
+  def initialize
+    @vehicle = get_vehicle
+    @id = @vehicle["id"]
+  end
+
+  def get(path)
+    uri = URI.parse(ENDPOINT + path)
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Get.new(uri.request_uri)
+    response = http.request(request)
+    response
+  end
+
+  def get_command(path)
+    get("/vehicles/#{@id}/command" + path)
   end
 end
