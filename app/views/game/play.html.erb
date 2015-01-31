@@ -1,10 +1,21 @@
-<p>Testing</p>
-<a href="#" class="btn btn-large btn-primary" onclick="toronto()">Toronto</a>
-<a href="#" class="btn btn-large btn-primary" onclick="tiltdown()">Tilt Down</a>
-<a href="#" class="btn btn-large btn-primary" onclick="tiltup()">Tilt Up</a>
-<a href="#" class="btn btn-large btn-primary" onclick="rollleft()">Roll Left</a>
-<a href="#" class="btn btn-large btn-primary" onclick="rollright()">Roll Right</a>
-<div id="map3d" style="height: 400px; width: 600px;"></div>
+<div class = "background">
+  <div class = "centerWrapper">
+    <div class = "row">
+    <%= image_tag("ubershooter.png") %>
+    </div>
+
+    <div class = "row">
+      <a href="#" class="btn btn-large btn-primary" onclick="toronto()">Toronto</a>
+      <a href="#" class="btn btn-large btn-primary" onclick="tiltdown()">Tilt Down</a>
+      <a href="#" class="btn btn-large btn-primary" onclick="tiltup()">Tilt Up</a>
+      <a href="#" class="btn btn-large btn-primary" onclick="rollleft()">Roll Left</a>
+      <a href="#" class="btn btn-large btn-primary" onclick="rollright()">Roll Right</a>
+    </div>
+    <div class = "row">
+      <div id="map3d"></div>
+    </div>
+  </div>
+</div>
 
 <script>
   var ge;
