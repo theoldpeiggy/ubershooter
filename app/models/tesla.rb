@@ -2,13 +2,15 @@ class Tesla < ActiveRecord::Base
   require 'net/http'
   require 'uri'
   ENDPOINT = 'http://private-anon-32e1816f4-timdorr.apiary-mock.com'
+  USERNAME = 'string'
+  PASSWORD = 'string'
 
-  def authenticate(username, password)
-    contents = "user_session%5Bemail%5D=#{username}&user_session%5Bpassword%5D=#{password}"
+  def authenticate
+    contents = "user_session%5Bemail%5D=#{USERNAME}\u0026user_session%5Bpassword%5D=#{PASSWORD}"
     uri = URI.parse(ENDPOINT + "/login")
     http = Net::HTTP.new(uri.host, uri.port)
 
-    request = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json'})
+    request = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/x-www-form-urlencoded'})
     request.body = contents
 
     response = http.request(request)

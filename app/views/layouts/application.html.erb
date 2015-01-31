@@ -14,6 +14,28 @@
 
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+  <script type="text/javascript">
+    var ge;
+    google.load("earth", "1", {"other_params":"sensor=true"});
+    function init() {
+      google.earth.createInstance('map3d', initCB, failureCB);
+    }
+
+    function initCB(instance) {
+       ge = instance;
+       ge.getWindow().setVisibility(true);
+    }
+
+    function failureCB(errorCode) {
+      alert("failed")
+    }
+
+    google.setOnLoadCallback(init);
+
+  </script>
 </head>
 <body>
 
