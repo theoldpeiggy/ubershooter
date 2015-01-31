@@ -63,59 +63,59 @@ class Tesla < ActiveRecord::Base
   end
 
   def set_open_charge_port
-    JSON.parse get_command("/charge_port_door_open").body
+    JSON.parse(get_command("/charge_port_door_open").body)["result"]
   end
 
   def set_charge_standard
-    JSON.parse get_command("/charge_standard").body
+    JSON.parse(get_command("/charge_standard").body)["result"]
   end
 
   def set_charge_max_range
-    JSON.parse get_command("/charge_max_range").body
+    JSON.parse(get_command("/charge_max_range").body)["result"]
   end
 
   def set_charge_limit(limit)
-    JSON.parse get_command("/set_charge_limit?percent=#{limit}").body
+    JSON.parse(get_command("/set_charge_limit?percent=#{limit}").body)["result"]
   end
 
   def set_charge_start
-    JSON.parse get_command("/charge_start").body
+    JSON.parse(get_command("/charge_start").body)["result"]
   end
 
   def set_charge_stop
-    JSON.parse get_command("/charge_stop").body
+    JSON.parse(get_command("/charge_stop").body)["result"]
   end
 
   def set_flash_lights
-    JSON.parse get_command("/flash_lights").body
+    JSON.parse(get_command("/flash_lights").body)["result"]
   end
 
   def set_honk_horn
-    JSON.parse get_command("/honk_horn").body
+    JSON.parse(get_command("/honk_horn").body)["result"]
   end
 
   def set_door_unlock
-    JSON.parse get_command("/door_unlock").body
+    JSON.parse(get_command("/door_unlock").body)["result"]
   end
 
   def set_door_lock
-    JSON.parse get_command("/door_lock").body
+    JSON.parse(get_command("/door_lock").body)["result"]
   end
 
   def set_temps(driver_temp, passenger_temp)
-    JSON.parse get_command("/set_temps?driver_temp=#{driver_temp}&passenger_temp=#{passenger_temp}").body
+    JSON.parse(get_command("/set_temps?driver_temp=#{driver_temp}&passenger_temp=#{passenger_temp}").body)["result"]
   end
 
   def set_auto_conditioning_start
-    JSON.parse get_command("/auto_conditioning_start").body
+    JSON.parse(get_command("/auto_conditioning_start").body)["result"]
   end
 
   def set_auto_conditioning_stop
-    JSON.parse get_command("/auto_conditioning_stop").body
+    JSON.parse(get_command("/auto_conditioning_stop").body)["result"]
   end
 
   def set_sun_roof_control(state)
-    JSON.parse get_command("/sun_roof_control?state=#{state}").body
+    JSON.parse(get_command("/sun_roof_control?state=#{state}").body)["result"]
   end
 
   private
