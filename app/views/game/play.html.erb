@@ -81,6 +81,66 @@
 
 
 
+//GOOGLE EARTH
+    google.load("earth", "1", {"other_params":"sensor=true"});
+    google.load("maps", "2", {"other_params":"sensor=true"});
+
+    var ge = null;
+    var cam;
+    var placemark;
+    var last_move;
+
+    function init() {
+      init3D();
+    }
+
+    function initCB(object) {
+      ge = object;
+      ge.getOptions().setFlyToSpeed(100);
+
+      ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
+
+      cam = new FirstPersonCam();
+      cam.updateCamera();
+      ge.getWindow().setVisibility(true);
+
+      keyboardFocusHack(ge);
+
+
+      // Create the placemark.
+      placemark = ge.createPlacemark('');
+      placemark.setName("target");
+
+      // Define a custom icon.
+      var icon = ge.createIcon('');
+      icon.setHref('http://maps.google.com/mapfiles/kml/paddle/red-circle.png');
+      var style = ge.createStyle(''); //create a new style
+      style.getIconStyle().setIcon(icon); //apply the icon to the style
+      style.getIconStyle().setScale(2.0);
+      placemark.setStyleSelector(style); //apply the style to the placemark
+
+      ge.getFeatures().appendChild(placemark);
+      // Set the placemark's location.
+      var point = ge.createPoint('');
+      point.setLatitude(43.663681);
+      point.setLongitude(-79.395149);
+      placemark.setGeometry(point);
+
+      last_move = Date.now();
+    }
+
+    function failureCB(object) {
+      /***
+       * This function will be called if plugin fails to load, in case
+       * you need to handle that error condition.
+       ***/
+    }
+
+    function init3D() {
+      google.earth.createInstance("map3d", initCB, failureCB);
+    }
+
+
 //FIRST PERSON CAM
 
 // firstpersoncam.js
@@ -123,10 +183,10 @@ strafeRight = false;
 altitudeUp = false;
 altitudeDown = false;
 
-must_fire = false
-fired = false
+must_fire = false;
+fired = false;
 
-INITIAL_CAMERA_ALTITUDE = 1.7; // Roughly 6 feet tall
+INITIAL_CAMERA_ALTITUDE = 15.5; // Roughly 6 feet tall
 cameraAltitude = INITIAL_CAMERA_ALTITUDE;
 //----------------------------------------------------------------------------
 // Utility Functions
@@ -278,7 +338,7 @@ FirstPersonCam.prototype.updateOrientation = function(dt) {
 
   // Based on dt and input press, update turn angle.
   if (turnLeft || turnRight) {
-    var turnSpeed = 60.0; // radians/sec
+    var turnSpeed = 90.0; // radians/sec
     if (turnLeft)
       turnSpeed *= -1.0;
     me.headingAngle += turnSpeed * dt * Math.PI / 180.0;
@@ -289,7 +349,7 @@ FirstPersonCam.prototype.updateOrientation = function(dt) {
       tiltSpeed *= -1.0;
     me.tiltAngle = me.tiltAngle + tiltSpeed * dt * Math.PI / 180.0;
     // Clamp
-    var tiltMax = 50.0 * Math.PI / 180.0;
+    var tiltMax = 0 * Math.PI / 180.0;
     var tiltMin = -90.0 * Math.PI / 180.0;
     if (me.tiltAngle > tiltMax)
       me.tiltAngle = tiltMax;
@@ -329,9 +389,9 @@ FirstPersonCam.prototype.updatePosition = function(dt) {
     forward = forwardVelocity * dt;
   }
   if (altitudeUp) {
-    cameraAltitude += 1.0;
+    cameraAltitude += 1.5;
   } else if (altitudeDown) {
-    cameraAltitude -= 1.0;
+    cameraAltitude -= 1.5;
   }
   cameraAltitude = Math.max(15.5, cameraAltitude);
 
@@ -397,6 +457,27 @@ FirstPersonCam.prototype.update = function() {
   if (must_fire && !fired) {
     hit()
     fired = true
+  }
+
+  var current_time = Date.now()
+  if (current_time - last_moved > 200) {
+    var point = ge.createPoint('');
+
+    $.ajax({
+      url: "<%=j target_path %>",
+      type:"get",
+      dataType:"json",
+      success: function(data) {
+        if (data.success) {
+          point.setLatitude(data.latitude)
+          point.setLongitude(data.longitude)
+        }
+      }
+    });
+
+    placemark.setGeometry(point);
+    ge.getFeatures().appendChild(placemark);
+    last_moved = current_time
   }
 };
 
