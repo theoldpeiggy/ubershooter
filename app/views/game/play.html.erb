@@ -1,6 +1,6 @@
 <div class = "background">
   <div class = "centerWrapper">
-    <div class = "row">
+    <div class = "row" id = "logo">
     <%= image_tag("ubershooter.png") %>
     </div>
 
@@ -8,7 +8,8 @@
       <%# link_to "Hit", '#', remote: true, class: "btn btn-large btn-success", onclick: "hit()"%>
     </div>
     <div class = "row">
-      <div id="map3d"></div>
+      <div class = "map" id="map3d"></div>
+
     </div>
   </div>
 </div>
@@ -78,7 +79,6 @@
     // Update the view in Google Earth.
     ge.getView().setAbstractView(camera);
   }
-
 
 
 //FIRST PERSON CAM
@@ -399,6 +399,8 @@ FirstPersonCam.prototype.update = function() {
     fired = true
   }
 };
+
+
 
 
 </script>
