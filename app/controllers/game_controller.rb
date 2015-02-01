@@ -8,9 +8,11 @@ class GameController < ApplicationController
 
   def try_hit
     edison = Edison.new
+    tesla = Tesla.new
     num = rand(10)
     if num >= 5
       edison.hit
+      tesla.set_honk_horn
     else
       edison.miss
     end

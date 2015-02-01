@@ -7,3 +7,5 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 GpsMock.create
+tesla = Tesla.new
+tesla.authenticate
