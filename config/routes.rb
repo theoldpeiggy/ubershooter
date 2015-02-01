@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   root 'game#play'
 
   get '/play', to: 'game#play'
-  get '/hit', to: 'game#hit'
   get '/target', to: 'game#get_target'
+  get '/try_hit', to: 'game#try_hit'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

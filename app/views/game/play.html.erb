@@ -17,7 +17,7 @@
 <script>
   function hit() {
     $.ajax({
-      url: "<%=j hit_path %>",
+      url: "<%=j try_hit_path %>",
       type:"get",
       dataType:"json",
       success: function(data) {
@@ -91,8 +91,6 @@
   var mapwidth;
   var mapheight;
 
-  var last_fired;
-
   function notFiring() {
     // Create the ScreenOverlay
       screenOverlay = ge.createScreenOverlay('');
@@ -134,6 +132,7 @@
 
       // Add the ScreenOverlay to Earth
       ge.getFeatures().appendChild(screenOverlay);
+      fire_on = false
   }
 
   function removeFiring() {
@@ -143,9 +142,11 @@
       ge.getFeatures().appendChild(tempScreenOverlay);
   }
 
+  var tempScreenOverlay
+
   function yesFiring() {
     // Create the ScreenOverlay
-      var tempScreenOverlay = ge.createScreenOverlay('');
+      tempScreenOverlay = ge.createScreenOverlay('');
 
       // Specify a path to the image and set as the icon
       var icon = ge.createIcon('');
@@ -186,10 +187,13 @@
     var cam;
     var placemark;
     var last_moved;
+    var last_fired;
+    var fire_on;
     var teslaPmrk;
     var teslaModel;
     var teslaLoc;
     var teslaLink;
+
     function init() {
       init3D();
     }
@@ -247,11 +251,13 @@
       teslaPmrk.setGeometry(teslaModel);
 
       last_moved = Date.now();
+      last_fired = Date.now();
 
       notFiring();
-
-
-
+      yesFiring();
+      var icon = ge.createIcon('');
+      icon.setHref('http://i.imgur.com/ViM8tSC.png');
+      tempScreenOverlay.setIcon(icon);
     }
 
     function failureCB(object) {
@@ -373,7 +379,7 @@ function keyDown(event) {
     must_fire = true
     event.returnValue = false;
   } else if (event.keyCode == 98) {
-    //
+    //b key
   } else {
     return true;
   }
@@ -582,9 +588,13 @@ FirstPersonCam.prototype.update = function() {
   me.updateCamera();
 
   if (must_fire && !fired) {
+    var icon = ge.createIcon('');
+    icon.setHref("<%= image_url("HUDshoot.png") %>");
+    tempScreenOverlay.setIcon(icon);
     hit();
-    //yesFiring();
     fired = true;
+    last_fired = Date.now();
+    fire_on = true;
   }
 
   var current_time = Date.now();
@@ -599,7 +609,6 @@ FirstPersonCam.prototype.update = function() {
           point.setLatitude(data.latitude);
           point.setLongitude(data.longitude);
           placemark.setGeometry(point);
-          ge.getFeatures().appendChild(placemark);
           last_moved = current_time;
 
           // Create a 3D model, initialize it from a Collada file, and place it
@@ -613,6 +622,14 @@ FirstPersonCam.prototype.update = function() {
         }
       }
     });
+
+  }
+
+  if (fire_on && current_time - last_fired > 500) {
+      var icon = ge.createIcon('');
+      icon.setHref('http://i.imgur.com/ViM8tSC.png');
+      tempScreenOverlay.setIcon(icon);
+      fire_on = false;
   }
 };
 
