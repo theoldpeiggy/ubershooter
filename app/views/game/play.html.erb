@@ -566,28 +566,22 @@ FirstPersonCam.prototype.update = function() {
 
   var current_time = Date.now();
   if (current_time - last_moved > 200) {
-    //var point = ge.createPoint('');
     $.ajax({
       url: "<%=j target_path %>",
       type:"get",
       dataType:"json",
       success: function(data) {
-        alert("hello")
         if (data.success) {
-
-          //point.setLatitude(data.latitude);
-          //point.setLongitude(data.longitude);
+          var point = ge.createPoint('');
+          point.setLatitude(data.latitude);
+          point.setLongitude(data.longitude);
+          placemark.setGeometry(point);
+          ge.getFeatures().removeChild(placemark);
+          ge.getFeatures().appendChild(placemark);
+          last_moved = current_time;
         }
       }
     });
-
-    ge.getFeatures().removeChild(placemark);
-      var point = ge.createPoint('');
-      point.setLatitude(43.663681);
-      point.setLongitude(-79.395149);
-      placemark.setGeometry(point);
-    ge.getFeatures().appendChild(placemark);
-    last_moved = current_time;
   }
 };
 

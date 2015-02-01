@@ -34,6 +34,7 @@ class GpsMock < ActiveRecord::Base
     end
 
     update_attributes(lat_arr_str: @lat_arr.join(' '), long_arr_str: @long_arr.join(' '))
+    #update_attributes(lat_arr_str: "43.663681 43.663691", long_arr_str: "-79.395149 -79.395159")
   end
 
 
@@ -46,7 +47,7 @@ class GpsMock < ActiveRecord::Base
   end
 
   def step
-    new_index = step_index == @steps ? 0 : step_index + 1
+    new_index = (step_index >= 150 ? 0 : step_index + 1)
     update_attributes(step_index: new_index)
   end
 end
