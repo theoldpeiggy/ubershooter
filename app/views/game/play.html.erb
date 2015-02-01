@@ -5,8 +5,7 @@
     </div>
 
     <div class = "row">
-      <%= link_to "LED On", '#', remote: true, class: "btn btn-large btn-success", onclick: "ledOn()"%>
-      <%= link_to "LED Off", '#', remote: true, class: "btn btn-large btn-success", onclick: "ledOff()"%>
+      <%# link_to "Hit", '#', remote: true, class: "btn btn-large btn-success", onclick: "hit()"%>
     </div>
     <div class = "row">
       <div id="map3d"></div>
@@ -15,31 +14,19 @@
 </div>
 
 <script>
-  function ledOn() {
+  function hit() {
     $.ajax({
-      url: "<%=j ledOn_path %>",
+      url: "<%=j hit_path %>",
       type:"get",
       dataType:"json",
       success: function(data) {
         if (data.success) {
-          alert("LED On!")
+          //do nothing
         }
       }
     });
   }
 
-  function ledOff() {
-    $.ajax({
-      url: "<%=j ledOff_path %>",
-      type:"get",
-      dataType:"json",
-      success: function(data) {
-        if (data.success) {
-          alert("LED Off!")
-        }
-      }
-    });
-  }
   function toronto() {
     // Get the current view.
     var lookAt = ge.createLookAt('');
@@ -136,6 +123,9 @@ strafeRight = false;
 altitudeUp = false;
 altitudeDown = false;
 
+must_fire = false
+fired = false
+
 INITIAL_CAMERA_ALTITUDE = 1.7; // Roughly 6 feet tall
 cameraAltitude = INITIAL_CAMERA_ALTITUDE;
 //----------------------------------------------------------------------------
@@ -192,8 +182,11 @@ function keyDown(event) {
     moveForward = true;
     event.returnValue = false;
   } else if (event.keyCode == 83 ||
-             event.keyCode == 115) {  // Move Forward.
+             event.keyCode == 115) {  // Move Backward.
     moveBackward = true;
+  } else if (event.keyCode == 32) {
+    must_fire = true
+    event.returnValue = false;
   } else {
     return true;
   }
@@ -237,6 +230,10 @@ function keyUp(event) {
   } else if (event.keyCode == 83 ||
              event.keyCode == 115) {  // Move Forward.
     moveBackward = false;
+  } else if (event.keyCode == 32) {
+    must_fire = false
+    fired = false
+    event.returnValue = false;
   }
   return false;
 }
@@ -396,6 +393,11 @@ FirstPersonCam.prototype.update = function() {
 
   // Update camera
   me.updateCamera();
+
+  if (must_fire && !fired) {
+    hit()
+    fired = true
+  }
 };
 
 

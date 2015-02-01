@@ -1,20 +1,14 @@
 class GameController < ApplicationController
-  respond_to :json, only: [:ledOn, :ledOff]
+  respond_to :json, only: :hit
 
   #This is going to be the default page for the application, used for EVERYTHING
   def play
 
   end
 
-  def ledOn
+  def hit
     edison = Edison.new
-    edison.ledOn
-    respond_with success: true
-  end
-
-  def ledOff
-    edison = Edison.new
-    edison.ledOff
+    edison.hit
     respond_with success: true
   end
 end
