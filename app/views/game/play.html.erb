@@ -189,6 +189,10 @@
     var last_moved;
     var last_fired;
     var fire_on;
+    var teslaPmrk;
+    var teslaModel;
+    var teslaLoc;
+    var teslaLink;
 
     function init() {
       init3D();
@@ -225,6 +229,26 @@
       point.setLatitude(43.663681);
       point.setLongitude(-79.395149);
       placemark.setGeometry(point);
+
+      // Create a 3D model, initialize it from a Collada file, and place it
+      // in the world.
+
+      teslaPmrk = ge.createPlacemark('');
+      teslaPmrk.setName('model');
+      teslaModel = ge.createModel('');
+      ge.getFeatures().appendChild(teslaPmrk);
+      teslaLoc = ge.createLocation('');
+      teslaModel.setLocation(teslaLoc);
+      teslaLink = ge.createLink('');
+
+      // A textured model created in Sketchup and exported as Collada.
+      teslaLink.setHref("http://kenliao.me/uthacks/tesla.dae");
+      teslaModel.setLink(teslaLink);
+
+      teslaLoc.setLatitude(43.663681);
+      teslaLoc.setLongitude(-79.395149);
+
+      teslaPmrk.setGeometry(teslaModel);
 
       last_moved = Date.now();
       last_fired = Date.now();
@@ -586,6 +610,15 @@ FirstPersonCam.prototype.update = function() {
           point.setLongitude(data.longitude);
           placemark.setGeometry(point);
           last_moved = current_time;
+
+          // Create a 3D model, initialize it from a Collada file, and place it
+          // in the world.
+
+          teslaLoc.setLatitude(data.latitude);
+          teslaLoc.setLongitude(data.longitude);
+
+          last_moved = Date.now();
+
         }
       }
     });
