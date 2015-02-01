@@ -15,7 +15,7 @@ class GpsMock < ActiveRecord::Base
     end_lat = 43.660797
     end_long = -79.385834
 
-    time = 30000
+    time = 20000
     frame = 200
     @steps = time/frame
 
@@ -42,7 +42,7 @@ class GpsMock < ActiveRecord::Base
     end_lat = 43.660797
     end_long = -79.385834
 
-    time = 30000
+    time = 20000
     frame = 200
     @steps = time/frame
 
@@ -66,7 +66,7 @@ class GpsMock < ActiveRecord::Base
     end_lat = 43.660797
     end_long = -79.385834
 
-    time = 30000
+    time = 20000
     frame = 200
     @steps = time/frame
 
@@ -90,7 +90,7 @@ class GpsMock < ActiveRecord::Base
     end_lat = 43.660797
     end_long = -79.385834
 
-    time = 30000
+    time = 20000
     frame = 200
     @steps = time/frame
 
@@ -128,7 +128,7 @@ class GpsMock < ActiveRecord::Base
   end
 
   def step
-    new_index = (step_index >= 150 * 4 - 1 ? 0 : step_index + 1)
+    new_index = (step_index >= 100 * 4 - 1 ? 0 : step_index + 1)
     update_attributes(step_index: new_index)
   end
 end
