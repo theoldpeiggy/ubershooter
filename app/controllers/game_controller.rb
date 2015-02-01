@@ -9,14 +9,18 @@ class GameController < ApplicationController
   def try_hit
     edison = Edison.new
     tesla = Tesla.new
+    gps = GpsMock.first
     num = rand(10)
+    hit = false
     if num >= 5
       edison.hit
       tesla.set_honk_horn
+      hit = true
     else
       edison.miss
+      hit = false
     end
-    respond_with success: true
+    respond_with success: true, hit: hit, latitude: gps.lat_arr[current_index], longitude: gps.long_arr[current_index]
   end
 
   def get_target

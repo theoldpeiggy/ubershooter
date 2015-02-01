@@ -15,6 +15,8 @@
 </div>
 
 <script>
+  var boomDone = true;
+  var last_boom;
   function hit() {
     $.ajax({
       url: "<%=j try_hit_path %>",
@@ -22,6 +24,14 @@
       dataType:"json",
       success: function(data) {
         if (data.success) {
+          console.log(data.hit)
+          if (data.hit) {
+              explLoc.setLatitude(data.latitude);
+              explLoc.setLongitude(data.longitude);
+              boomDone = false;
+              last_boom = Date.now();
+
+          }
           //do nothing
         }
       }
@@ -193,6 +203,12 @@
     var teslaModel;
     var teslaLoc;
     var teslaLink;
+    
+    var explPmrk;
+    var explModel;
+    var explLoc;
+    var explLink;
+
 
     function init() {
       init3D();
@@ -249,6 +265,24 @@
       teslaLoc.setLongitude(-79.395149);
 
       teslaPmrk.setGeometry(teslaModel);
+
+
+      explPmrk = ge.createPlacemark('');
+      explPmrk.setName('boom');
+      explModel = ge.createModel('');
+      ge.getFeatures().appendChild(explPmrk);
+      explLoc = ge.createLocation('');
+      explModel.setLocation(explLoc);
+      explLink = ge.createLink('');
+
+      // A textured model created in Sketchup and exported as Collada.
+      explLink.setHref("http://kenliao.me/uthacks/boom.dae");
+      explModel.setLink(explLink);
+
+      explLoc.setLatitude(43.663681);
+      explLoc.setLongitude(-79.395249);
+
+      explPmrk.setGeometry(explModel);
 
 
       last_moved = Date.now();
@@ -631,6 +665,12 @@ FirstPersonCam.prototype.update = function() {
       icon.setHref('http://i.imgur.com/ViM8tSC.png');
       tempScreenOverlay.setIcon(icon);
       fire_on = false;
+  }
+
+  if (!boomDone && current_time - last_boom > 500) {
+      explLoc.setLatitude(7.1881);
+      explLoc.setLongitude(21.0936);
+      boomDone = true;
   }
 };
 
