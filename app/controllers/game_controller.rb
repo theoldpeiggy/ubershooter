@@ -13,6 +13,9 @@ class GameController < ApplicationController
   end
 
   def get_target
-    respond_with success: true, latitude: 43.663681, longitude: -79.395149
+    gps = GpsMock.first
+    current_index = gps.step_index
+    gps.step
+    respond_with success: true, latitude: gps.lat_arr[current_index], longitude: gps.long_arr[current_index]
   end
 end
