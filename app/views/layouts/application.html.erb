@@ -20,41 +20,6 @@
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
   <script type="text/javascript" src="http://earth-api-samples.googlecode.com/svn/trunk/lib/math3d.js"></script>
   <script type="text/javascript" src="http://earth-api-samples.googlecode.com/svn/trunk/lib/keyboard-focus-hack.js"></script>
-  <script type="text/javascript">
-    google.load("earth", "1", {"other_params":"sensor=true"});
-    google.load("maps", "2", {"other_params":"sensor=true"});
-
-    var ge = null;
-    var cam;
-
-    function init() {
-      init3D();
-    }
-
-    function initCB(object) {
-      ge = object;
-      ge.getOptions().setFlyToSpeed(100);
-
-      ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
-
-      cam = new FirstPersonCam();
-      cam.updateCamera();
-      ge.getWindow().setVisibility(true);
-
-      keyboardFocusHack(ge);
-    }
-
-    function failureCB(object) {
-      /***
-       * This function will be called if plugin fails to load, in case
-       * you need to handle that error condition.
-       ***/
-    }
-
-    function init3D() {
-      google.earth.createInstance("map3d", initCB, failureCB);
-    }
-  </script>
 </head>
 <body onload='init()' onunload="GUnload()" onKeyDown="return keyDown(event);" onKeyUp="return keyUp(event);" id='body'>
 
