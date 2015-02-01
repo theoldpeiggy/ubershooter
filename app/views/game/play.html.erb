@@ -16,6 +16,7 @@
 
 <script>
   function hit() {
+    yesFiring();
     $.ajax({
       url: "<%=j hit_path %>",
       type:"get",
@@ -26,6 +27,7 @@
         }
       }
     });
+
   }
 
   function toronto() {
@@ -80,6 +82,92 @@
     ge.getView().setAbstractView(camera);
   }
 
+  //Variables to do with overlays
+  var screenOverlay;
+  var icon;
+  var windowWidth;
+  var leftMargin;
+  var windowHeight;
+  var topMargin;
+  var mapwidth;
+  var mapheight;
+
+  function notFiring() {
+    // Create the ScreenOverlay
+      screenOverlay = ge.createScreenOverlay('');
+
+      // Specify a path to the image and set as the icon
+      icon = ge.createIcon('');
+      icon.setHref('http://i.imgur.com/ViM8tSC.png');
+      screenOverlay.setIcon(icon);
+
+
+      // Set the ScreenOverlay's position in the window
+      windowWidth = $(window).width();
+      leftMargin = (windowWidth - (windowWidth * 0.39)) /2;
+      windowHeight = $(window).height();
+      topMargin = document.getElementById("logo").offsetHeight * 1.85;
+
+      screenOverlay.getOverlayXY().setXUnits(ge.UNITS_PIXELS);
+      screenOverlay.getOverlayXY().setYUnits(ge.UNITS_PIXELS);
+      screenOverlay.getOverlayXY().setX(leftMargin);
+      screenOverlay.getOverlayXY().setY(topMargin);
+
+      mapwidth = document.getElementById("map3d").offsetWidth;
+      mapheight = document.getElementById("map3d").offsetHeight;
+
+      // Set the overlay's size in pixels
+      screenOverlay.getSize().setXUnits(ge.UNITS_PIXELS);
+      screenOverlay.getSize().setYUnits(ge.UNITS_PIXELS);
+      screenOverlay.getSize().setX(mapwidth);
+      screenOverlay.getSize().setY(mapheight);
+
+      // Specify the point in the image around which to rotate
+      screenOverlay.getRotationXY().setXUnits(ge.UNITS_FRACTION);
+      screenOverlay.getRotationXY().setYUnits(ge.UNITS_FRACTION);
+      screenOverlay.getRotationXY().setX(0.5);
+      screenOverlay.getRotationXY().setY(0.5);
+
+      // Rotate the overlay
+      screenOverlay.setRotation(0);
+
+      // Add the ScreenOverlay to Earth
+      ge.getFeatures().appendChild(screenOverlay);
+  }
+
+  function yesFiring() {
+    // Create the ScreenOverlay
+      var screenOverlay = ge.createScreenOverlay('');
+
+      // Specify a path to the image and set as the icon
+      var icon = ge.createIcon('');
+      icon.setHref("<%=j asset_path('HUDshoot.png') %>");
+      screenOverlay.setIcon(icon);
+
+      screenOverlay.getOverlayXY().setXUnits(ge.UNITS_PIXELS);
+      screenOverlay.getOverlayXY().setYUnits(ge.UNITS_PIXELS);
+      screenOverlay.getOverlayXY().setX(leftMargin);
+      screenOverlay.getOverlayXY().setY(topMargin);
+
+      // Set the overlay's size in pixels
+      screenOverlay.getSize().setXUnits(ge.UNITS_PIXELS);
+      screenOverlay.getSize().setYUnits(ge.UNITS_PIXELS);
+      screenOverlay.getSize().setX(mapwidth);
+      screenOverlay.getSize().setY(mapheight);
+
+      // Specify the point in the image around which to rotate
+      screenOverlay.getRotationXY().setXUnits(ge.UNITS_FRACTION);
+      screenOverlay.getRotationXY().setYUnits(ge.UNITS_FRACTION);
+      screenOverlay.getRotationXY().setX(0.5);
+      screenOverlay.getRotationXY().setY(0.5);
+
+      // Rotate the overlay
+      screenOverlay.setRotation(0);
+
+      // Add the ScreenOverlay to Earth
+      ge.getFeatures().appendChild(screenOverlay);
+      window.setTimeout(function(){ge.getFeatures().removeChild(screenOverlay)},500)
+  }
 
 //GOOGLE EARTH
     google.load("earth", "1", {"other_params":"sensor=true"});
@@ -128,47 +216,10 @@
 
       last_move = Date.now();
 
-
-      // Create the ScreenOverlay
-      var screenOverlay = ge.createScreenOverlay('');
-
-      // Specify a path to the image and set as the icon
-      var icon = ge.createIcon('');
-      icon.setHref('http://i.imgur.com/ViM8tSC.png');
-      screenOverlay.setIcon(icon);
+      notFiring();
 
 
-      // Set the ScreenOverlay's position in the window
-      var windowWidth = $(window).width();
-      var leftMargin = (windowWidth - (windowWidth * 0.39)) /2;
-      var windowHeight = $(window).height();
-      var topMargin = document.getElementById("logo").offsetHeight * 1.85;
-
-      screenOverlay.getOverlayXY().setXUnits(ge.UNITS_PIXELS);
-      screenOverlay.getOverlayXY().setYUnits(ge.UNITS_PIXELS);
-      screenOverlay.getOverlayXY().setX(leftMargin);
-      screenOverlay.getOverlayXY().setY(topMargin);
-
-      var width = document.getElementById("map3d").offsetWidth;
-      var height = document.getElementById("map3d").offsetHeight;
-
-      // Set the overlay's size in pixels
-      screenOverlay.getSize().setXUnits(ge.UNITS_PIXELS);
-      screenOverlay.getSize().setYUnits(ge.UNITS_PIXELS);
-      screenOverlay.getSize().setX(width);
-      screenOverlay.getSize().setY(height);
-
-      // Specify the point in the image around which to rotate
-      screenOverlay.getRotationXY().setXUnits(ge.UNITS_FRACTION);
-      screenOverlay.getRotationXY().setYUnits(ge.UNITS_FRACTION);
-      screenOverlay.getRotationXY().setX(0.5);
-      screenOverlay.getRotationXY().setY(0.5);
-
-      // Rotate the overlay
-      screenOverlay.setRotation(0);
-
-      // Add the ScreenOverlay to Earth
-      ge.getFeatures().appendChild(screenOverlay);
+      
     }
 
     function failureCB(object) {
