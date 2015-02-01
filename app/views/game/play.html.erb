@@ -5,11 +5,8 @@
     </div>
 
     <div class = "row">
-      <a href="#" class="btn btn-large btn-primary" onclick="toronto()">Toronto</a>
-      <a href="#" class="btn btn-large btn-primary" onclick="tiltdown()">Tilt Down</a>
-      <a href="#" class="btn btn-large btn-primary" onclick="tiltup()">Tilt Up</a>
-      <a href="#" class="btn btn-large btn-primary" onclick="rollleft()">Roll Left</a>
-      <a href="#" class="btn btn-large btn-primary" onclick="rollright()">Roll Right</a>
+      <%= link_to "LED On", '#', remote: true, class: "btn btn-large btn-success", onclick: "ledOn()"%>
+      <%= link_to "LED Off", '#', remote: true, class: "btn btn-large btn-success", onclick: "ledOff()"%>
     </div>
     <div class = "row">
       <div id="map3d"></div>
@@ -18,7 +15,31 @@
 </div>
 
 <script>
+  function ledOn() {
+    $.ajax({
+      url: "<%=j ledOn_path %>",
+      type:"get",
+      dataType:"json",
+      success: function(data) {
+        if (data.success) {
+          alert("LED On!")
+        }
+      }
+    });
+  }
 
+  function ledOff() {
+    $.ajax({
+      url: "<%=j ledOff_path %>",
+      type:"get",
+      dataType:"json",
+      success: function(data) {
+        if (data.success) {
+          alert("LED Off!")
+        }
+      }
+    });
+  }
   function toronto() {
     // Get the current view.
     var lookAt = ge.createLookAt('');
@@ -140,10 +161,10 @@ function keyDown(event) {
   if (!event) {
     event = window.event;
   }
-  if (event.keyCode == 33) {  // Altitude Up
+  if (event.keyCode ==69 || event.keyCode ==  101) {  // Altitude Up
     altitudeUp = true;
     event.returnValue = false;
-  } else if (event.keyCode == 34) {  // Altitude Down
+  } else if (event.keyCode == 81 || event.keyCode == 113) {  // Altitude Down
     altitudeDown = true;
     event.returnValue = false;
   } else if (event.keyCode == 37) {  // Turn Left.
@@ -183,10 +204,10 @@ function keyUp(event) {
   if (!event) {
     event = window.event;
   }
-  if (event.keyCode == 33) {  // Altitude Up
+  if (event.keyCode == 69 || event.keyCode ==  101) {  // Altitude Up
     altitudeUp = false;
     event.returnValue = false;
-  } else if (event.keyCode == 34) {  // Altitude Down
+  } else if (event.keyCode == 81 || event.keyCode == 113) {  // Altitude Down
     altitudeDown = false;
     event.returnValue = false;
   } else if (event.keyCode == 37) {  // Left.
