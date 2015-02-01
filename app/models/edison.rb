@@ -14,4 +14,8 @@ class Edison < ActiveRecord::Base
   def hit
     get("/hit")
   end
+
+  def miss
+    get("/miss")
+  end
 end

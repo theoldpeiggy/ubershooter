@@ -1,14 +1,19 @@
 class GameController < ApplicationController
-  respond_to :json, only: [:hit, :get_target]
+  respond_to :json, only: [:get_target, :try_hit]
 
   #This is going to be the default page for the application, used for EVERYTHING
   def play
 
   end
 
-  def hit
+  def try_hit
     edison = Edison.new
-    edison.hit
+    num = rand(10)
+    if num >= 5
+      edison.hit
+    else
+      edison.miss
+    end
     respond_with success: true
   end
 
