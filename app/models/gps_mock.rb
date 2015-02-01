@@ -10,10 +10,10 @@ class GpsMock < ActiveRecord::Base
 
     total_steps = 0
 
-    start_lat = 43.659874
-    start_long = -79.39042
-    end_lat = 43.660797
-    end_long = -79.385834
+    start_lat = 43.659876
+    start_long = -79.390348
+    end_lat = 43.661368
+    end_long = -79.383087
 
     time = 20000
     frame = 200
@@ -37,10 +37,10 @@ class GpsMock < ActiveRecord::Base
 
     #SECOND
 
-    start_lat = 43.659874
-    start_long = -79.39042
-    end_lat = 43.660797
-    end_long = -79.385834
+    start_lat = 43.661368
+    start_long = -79.383087
+    end_lat = 43.656326
+    end_long = -79.380901
 
     time = 20000
     frame = 200
@@ -61,10 +61,10 @@ class GpsMock < ActiveRecord::Base
 
     #THIRD
 
-    start_lat = 43.659874
-    start_long = -79.39042
-    end_lat = 43.660797
-    end_long = -79.385834
+    start_lat = 43.656326
+    start_long = -79.380901
+    end_lat = 43.654817
+    end_long = -79.388138
 
     time = 20000
     frame = 200
@@ -85,10 +85,10 @@ class GpsMock < ActiveRecord::Base
 
     #FOURTH
 
-    start_lat = 43.659874
-    start_long = -79.39042
-    end_lat = 43.660797
-    end_long = -79.385834
+    start_lat = 43.654817
+    start_long = -79.388138
+    end_lat = 43.659876
+    end_long = -79.390348
 
     time = 20000
     frame = 200
