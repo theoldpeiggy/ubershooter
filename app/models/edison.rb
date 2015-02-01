@@ -11,11 +11,7 @@ class Edison < ActiveRecord::Base
     response
   end
 
-  def ledOn
-    get("/ledOn")
-  end
-
-  def ledOff
-    get("/ledOff")
+  def hit
+    get("/hit")
   end
 end
