@@ -11,11 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150131215557) do
+ActiveRecord::Schema.define(version: 20150201041315) do
 
   create_table "edisons", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "gps_mocks", force: :cascade do |t|
+    t.integer  "step_index",   default: 0
+    t.text     "lat_arr_str"
+    t.text     "long_arr_str"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "teslas", force: :cascade do |t|
